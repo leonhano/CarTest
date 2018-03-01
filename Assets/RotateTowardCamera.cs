@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class RotateTowardCamera : MonoBehaviour {
 
     public Camera mainCamera = null;
-    public string showText = "";
+    public static string showText = "";
+    private static string m_eventName = "";
 
     private Text textComponent = null;
 
@@ -38,5 +39,20 @@ public class RotateTowardCamera : MonoBehaviour {
     {
         if (textComponent)
             textComponent.text = showText;
+    }
+
+    public static void SetText(string name, float speed, float distance, float money)
+    {
+        showText = name + "  Speed: " + speed.ToString("0.00") + "\n  Distance: " + distance.ToString("0.0")
+                    + "\n  Money: " + money.ToString("c2") + "\n  Event: " + m_eventName;
+    }
+    public static void SetEventText(string eventName)
+    {
+        m_eventName = eventName;
+    }
+    
+    public static void SetText(string text)
+    {
+        showText = text;
     }
 }
