@@ -12,13 +12,18 @@ namespace UnityStandardAssets.Vehicles.Car
         private GameObject m_carGO;
         private bool m_bStopToCharge;    //stop to charge
         private float m_targetTime = 3.0f;
-        public float m_CHARGETIME = 3f;
+        public float m_CHARGETIME = 1f;
+        public int m_RandomSeed = 1;
+       // public const float ChangeTime = 2f;
+
+        private Vector3 m_prePosition = Vector3.zero;
 
         private void Awake()
         {
             // get the car controller
             m_Car = GetComponent<CarController>();
             m_carGO = m_Car.gameObject;
+            m_prePosition = m_carGO.transform.position;
             m_bStopToCharge = false;
             m_targetTime = m_CHARGETIME;
         }
@@ -36,13 +41,15 @@ namespace UnityStandardAssets.Vehicles.Car
             m_Car.Move(h, v, v, 0f);
 #endif
         }
+
         private void AutoDrive()
         {
-            float h = UnityEngine.Random.Range(0, 100);//CrossPlatformInputManager.GetAxis("Horizontal");
-            float v = UnityEngine.Random.Range(0, 100); //CrossPlatformInputManager.GetAxis("Vertical");
+            float h = GetRandomNumber((m_RandomSeed * -1), m_RandomSeed); //CrossPlatformInputManager.GetAxis("Horizontal");
+            float v = GetRandomNumber((m_RandomSeed * -1), m_RandomSeed); //CrossPlatformInputManager.GetAxis("Vertical");
 #if !MOBILE_INPUT
             float handbrake = 0f; // CrossPlatformInputManager.GetAxis("Jump");
             //Debug.Log("h = " + h + " y =" + v + " handbrake = " + handbrake);
+
             m_Car.Move(h, v, v, handbrake);
 #else
             m_Car.Move(h, v, v, 0f);
@@ -51,7 +58,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void StopDrive()
         {
-            m_Car.Move(0, 0, 0, 1000);
+            m_Car.Move(0, -10, 100, 10);
         }
         
         public void StartToCharge()
@@ -70,31 +77,38 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private void FixedUpdate()
         {
-            /*
             m_targetTime -= Time.deltaTime;
-
-            if (m_targetTime <= 0.0f)
-            {
-
-                FinishToCharge();
-
-            }
-            */
-
-            if (m_bStopToCharge)
-                Invoke("FinishToCharge", 30);
-
-            if (!m_bStopToCharge)
-            {
-                //OriginalControl();
-                AutoDrive();
+            
+            if (!m_bStopToCharge)   {
+                if (m_targetTime < 0)
+                {
+                    AutoDrive();
+                    m_targetTime = m_CHARGETIME;
+                }
             }
             else
             {
-                StopDrive();
+                float dist = Vector3.Distance(m_carGO.transform.position, m_prePosition);
+                if (dist < 1.0f)
+                {
+                    FinishToCharge();
+                }
+
             }
+            m_prePosition = m_carGO.transform.position;
         }
 
 
+        //Function to get random number
+        private static readonly System.Random getrandom = new System.Random();
+
+        public static int GetRandomNumber(int min, int max)
+        {
+            lock (getrandom) // synchronize
+            {
+                return getrandom.Next(min, max);
+            }
+        }
     }
+
 }

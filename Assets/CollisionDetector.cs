@@ -27,12 +27,13 @@ public class CollisionDetector : MonoBehaviour {
             Debug.Log(this.gameObject.name + "   --- StartToCharge to charge  ----  " + other.gameObject.name);
         }
 
+        /*
         if (other.gameObject.tag == "Car")
         {
 
             Debug.Log(this.gameObject.name + "   --- Car to charge  ----  " + other.gameObject.name);
 
         }
-
+        */
     }
 }
