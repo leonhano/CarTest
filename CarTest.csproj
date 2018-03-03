@@ -337,7 +337,9 @@
     <Compile Include="Assets\Cartoon SportCar B01\Standard Assets\script\VignetteAndChromaticAberration.cs" />
     <Compile Include="Assets\Cartoon SportCar B01\Standard Assets\script\WheelEffects.cs" />
     <Compile Include="Assets\CollisionDetector.cs" />
+    <Compile Include="Assets\EnemyPatrol.cs" />
     <Compile Include="Assets\RotateTowardCamera.cs" />
+    <Compile Include="Assets\Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Cartoon SportCar B01\Standard Assets\divers\ChromaticAberrationShader.shader" />

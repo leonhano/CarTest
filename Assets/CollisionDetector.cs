@@ -25,9 +25,14 @@ public class CollisionDetector : MonoBehaviour {
             m_CarControl = this.gameObject.GetComponentInParent<CarUserControl>();
             m_CarControl.StartToCharge();
             Debug.Log(this.gameObject.name + "   --- StartToCharge to charge  ----  " + other.gameObject.name);
+
         }
 
+
+        var hitPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
+        m_CarControl.TurnAround(hitPoint);
         /*
+           
         if (other.gameObject.tag == "Car")
         {
 
@@ -36,4 +41,5 @@ public class CollisionDetector : MonoBehaviour {
         }
         */
     }
+    
 }

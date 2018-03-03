@@ -21,7 +21,13 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private Vector3 m_prePosition = Vector3.zero;
 
-        
+
+        //for turning; 
+        Quaternion newRotation;
+        bool bStopAndRotate = false;        //stop and rotate flag, to avoid terrain;
+        public float patrolSpeed = 2.5f;           //patrol speed;
+        public float detectXDistance = 15f; //detect down to check whether water is too shallow to move;
+        protected LayerMask raycastMask;        //raycast mask, ignore water layer;
 
         private void Awake()
         {
@@ -33,6 +39,9 @@ namespace UnityStandardAssets.Vehicles.Car
             m_prePosition = m_carGO.transform.position;
             m_bStopToCharge = false;
             m_targetTime = m_CHARGETIME;
+
+            newRotation = transform.rotation;
+            raycastMask = ~raycastMask;
         }
 
         private void OriginalControl()
@@ -93,6 +102,13 @@ namespace UnityStandardAssets.Vehicles.Car
             m_totalDistance += dist;
 
 
+            //turn if need; 
+            if (Quaternion.Angle(transform.rotation, newRotation) > 1)
+                transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, Time.deltaTime);
+            else
+                PatrolRaycast(); //if finish rotation, then check whether we can keep on moving;
+
+
             if (!m_bStopToCharge)   {
                 if (m_targetTime < 0)
                 {
@@ -113,7 +129,41 @@ namespace UnityStandardAssets.Vehicles.Car
 
             RotateTowardCamera.SetText(m_carGO.name, GetSpeed(), m_totalDistance, UnityEngine.Random.Range(0, 100));
         }
-        
+
+        void PatrolRaycast()
+        {
+            bStopAndRotate = false;
+            Vector3 rayDirection = transform.rotation * Vector3.forward;
+
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, rayDirection, out hit, detectXDistance, raycastMask))
+            {
+                bStopAndRotate = true;
+                TurnAround(hit.point);
+                //Debug.Log("Shallow waterr, can't move!");             //else, just turn;
+            }
+            else
+            {
+                newRotation = transform.rotation;
+            }
+        }
+
+        public void TurnAround(Vector3 hitPoint)
+        {
+
+            Quaternion hitRotation = Tools.LookAtPlayerOnYAxis(transform.position, hitPoint);
+            newRotation = hitRotation * Quaternion.AngleAxis(180, transform.up);
+            //Debug.Log(this.name + "  : TurnAround ---> newRotation = " + newRotation);
+
+            //         Vector3 targetAngles = hitTransform.eulerAngles + 180f * Vector3.up; // what the new angles should be
+            // 
+            //         newRotation = Quaternion.Euler(targetAngles);
+            if (newRotation == transform.rotation)
+            {
+                Debug.LogError(this.name + "Wrong, why new rotation is same as transform roatation = " + newRotation);
+                return;
+            }
+        }
 
         public float GetSpeed()
         {
