@@ -354,6 +354,7 @@ namespace UnityStandardAssets.Vehicles.Car
 
         private bool AnySkidSoundPlaying()
         {
+            /*
             for (int i = 0; i < 4; i++)
             {
                 if (m_WheelEffects[i].PlayingAudio)
@@ -362,6 +363,8 @@ namespace UnityStandardAssets.Vehicles.Car
                 }
             }
             return false;
+            */
+            return true;
         }
     }
 }
