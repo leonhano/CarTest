@@ -1,0 +1,8 @@
+Library/ShaderCache/
+Library/PlayerDataCache/
+Library/il2cpp_cache/
+Library/metadata/
+Output/
+Library/webgl_cache/
+.vs/
+Temp/
