@@ -280,6 +280,15 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="LunarParser">
+      <HintPath>Assets/Cartoon SportCar B01/script/NEOT/LunarParser.dll</HintPath>
+    </Reference>
+    <Reference Include="NEO-Emulator">
+      <HintPath>Assets/Cartoon SportCar B01/script/NEOT/NEO-Emulator.dll</HintPath>
+    </Reference>
+    <Reference Include="NeoLux">
+      <HintPath>Assets/Cartoon SportCar B01/script/NEOT/NeoLux.dll</HintPath>
+    </Reference>
     <Reference Include="SyntaxTree.Mono.Cecil">
       <HintPath>Assets/UnityVS/Editor/SyntaxTree.Mono.Cecil.dll</HintPath>
     </Reference>
@@ -307,6 +316,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Cartoon SportCar B01\script\brake_light.cs" />
+    <Compile Include="Assets\Cartoon SportCar B01\script\NEOT\Server.cs" />
     <Compile Include="Assets\Cartoon SportCar B01\script\on_off_light.cs" />
     <Compile Include="Assets\Cartoon SportCar B01\script\OpenElement.cs" />
     <Compile Include="Assets\Cartoon SportCar B01\Standard Assets\script\AbstractTargetFollower.cs" />

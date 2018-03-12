@@ -4528,7 +4528,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Insurance:
 
-    Money: '
+    NEOT: '
 --- !u!222 &390822101
 CanvasRenderer:
   m_ObjectHideFlags: 0

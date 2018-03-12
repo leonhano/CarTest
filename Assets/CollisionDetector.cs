@@ -20,17 +20,27 @@ public class CollisionDetector : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
+        m_CarControl = this.gameObject.GetComponentInParent<CarUserControl>();
+
         if (other.gameObject.tag != "Ground")
         {
-            m_CarControl = this.gameObject.GetComponentInParent<CarUserControl>();
             m_CarControl.StartToCharge();
             Debug.Log(this.gameObject.name + "   --- StartToCharge to charge  ----  " + other.gameObject.name);
 
         }
 
-
-        var hitPoint = other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position);
-        m_CarControl.TurnAround(hitPoint);
+        if(transform != null)
+        {
+            var collider = other.gameObject.GetComponent<Collider>();
+            
+            if (collider != null)
+            {
+                var hitPoint = collider.ClosestPointOnBounds(transform.position);
+                m_CarControl.TurnAround(hitPoint);
+            }
+                
+        }
+        
         /*
            
         if (other.gameObject.tag == "Car")
